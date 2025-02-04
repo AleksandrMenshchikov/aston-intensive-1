@@ -1,3 +1,3 @@
 (function log() {
-    console.log("Привет!");
+    console.log("Привет!!!");
 })();
