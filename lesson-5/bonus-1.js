@@ -1,11 +1,26 @@
-function Foo() {
-    this._name = null;
+function Foo(name) {
+    Object.defineProperty(this, 'name', {
+        value: name,
+        writable: false,
+        enumerable: true,
+        configurable: true,
+    });
 }
 
 Foo.prototype.getName = function () {
-    return this._name;
+    return this.name;
 }
 
-Foo.prototype.setName = function (name) {
-    this._name = name;
+Foo.prototype.setName = function (value) {
+    Object.defineProperty(this, 'name', {
+        value: value,
+    });
 }
+
+const f = new Foo("Alex");
+f.name = "Jordan"
+console.log(f); // { name: 'Alex' }
+f.setName("Jordan");
+console.log(f); // { name: 'Jordan' }
+const name = f.getName();
+console.log(name); // Jordan
