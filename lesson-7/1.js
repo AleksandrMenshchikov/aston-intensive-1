@@ -15,19 +15,21 @@ Array.prototype.customSome = function (cb, thisArg) {
 };
 
 Array.prototype.customReduce = function (cb, initialValue) {
-    if (initialValue && this.length === 0) {
+    if (typeof arguments[0] !== 'function') {
+        throw new TypeError('First argument must be a function');
+    } else if (arguments.length > 2) {
+        throw new TypeError('Amount arguments must be no more than 2');
+    } else if (arguments.length === 1 && this.length === 0) {
+        throw new TypeError('Reduce of empty array with no initial value')
+    } else if (arguments.length === 2 && this.length === 0) {
         return initialValue
-    } else if (!initialValue && this.length === 1) {
+    } else if (arguments.length === 1 && this.length === 1) {
         return this[0]
     }
 
-    let accumulator = initialValue ? initialValue : this[0];
+    let accumulator = arguments.length === 2 ? initialValue : this[0];
 
-    if (!accumulator) {
-        throw new TypeError('Reduce of empty array with no initial value')
-    }
-
-    let i = initialValue ? 0 : 1
+    let i = arguments.length === 2 ? 0 : 1
 
     for (i; i < this.length; i++) {
         accumulator = cb(accumulator, this[i], i, this);
